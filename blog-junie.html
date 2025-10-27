@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cómo Utilizar Junie - FRAM Development</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #0a0a0a;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* Header Flotante */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .header.scrolled {
+            padding: 15px 0;
+            background: rgba(91, 130, 160, 0.95);
+            backdrop-filter: blur(15px);
+        }
+
+        .nav-bar {
+            background: rgba(30, 30, 30, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin: 0 auto;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 700px;
+            width: fit-content;
+            border: none;
+        }
+
+        .header.scrolled .nav-bar {
+            margin: 0 20px;
+            border-radius: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            max-width: none;
+            width: auto;
+            justify-content: center;
+            border: none;
+        }
+
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.4s ease;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s ease;
+            padding: 6px 12px;
+            border-radius: 15px;
+        }
+
+        .nav-link:hover {
+            color: #5b82a0;
+        }
+
+        .home-icon {
+            font-size: 16px;
+        }
+
+
+
+        /* Article Content */
+        .article-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 120px 40px 80px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .article-category {
+            background: rgba(91, 130, 160, 0.2);
+            color: #5b82a0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 1px solid rgba(91, 130, 160, 0.3);
+        }
+
+        .article-title {
+            font-size: 42px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .article-meta i {
+            color: #5b82a0;
+            margin-right: 8px;
+        }
+
+        .article-description {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .article-content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(91, 130, 160, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #5b82a0, #4a6b85);
+        }
+
+        .content-section {
+            margin-bottom: 40px;
+        }
+
+        .content-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #5b82a0;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            font-size: 20px;
+        }
+
+        .content-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+        }
+
+        .content-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .content-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        .content-list li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #5b82a0;
+            font-size: 12px;
+        }
+
+        .highlight-box {
+            background: rgba(91, 130, 160, 0.1);
+            border: 1px solid rgba(91, 130, 160, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .highlight-box::before {
+            content: '💡';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #0a0a0a;
+            padding: 0 10px;
+            font-size: 18px;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(91, 130, 160, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #5b82a0;
+            overflow-x: auto;
+        }
+
+        /* Video Section */
+        .video-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(91, 130, 160, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .video-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #5b82a0, #4a6b85);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .video-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #5b82a0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .video-description {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            /* 16:9 aspect ratio */
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(91, 130, 160, 0.2);
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 18px;
+            gap: 15px;
+        }
+
+        .video-placeholder i {
+            font-size: 48px;
+            color: #5b82a0;
+        }
+
+        .video-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #5b82a0, #4a6b85);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(91, 130, 160, 0.3);
+        }
+
+        .video-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(91, 130, 160, 0.4);
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(91, 130, 160, 0.2);
+            color: #5b82a0;
+            padding: 12px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            border: 1px solid rgba(91, 130, 160, 0.3);
+        }
+
+        .back-button:hover {
+            background: #5b82a0;
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        .back-button i {
+            font-size: 16px;
+        }
+
+        /* Footer */
+        .article-footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(91, 130, 160, 0.2);
+        }
+
+        .footer-text {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .footer-link {
+            color: #5b82a0;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+
+        /* Background */
+        .article-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            z-index: -1;
+        }
+
+        .article-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(91, 130, 160, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(70, 100, 130, 0.1) 0%, transparent 50%);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .article-container {
+                padding: 100px 20px 60px;
+            }
+
+            .article-title {
+                font-size: 28px;
+            }
+
+            .article-meta {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .article-content {
+                padding: 25px;
+            }
+
+            .video-section {
+                padding: 20px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .content-text {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .article-title {
+                font-size: 24px;
+            }
+
+            .article-content {
+                padding: 20px;
+            }
+
+            .video-section {
+                padding: 15px;
+            }
+
+            .back-button {
+                font-size: 12px;
+                padding: 10px 16px;
+            }
+        }
+
+        /* Estilo moderno para tablas */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 25px 0;
+            font-size: 15px;
+        }
+
+        thead {
+            background: linear-gradient(90deg, #5b82a0, #4a6b85);
+            color: white;
+        }
+
+        thead th {
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        tbody td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(91, 130, 160, 0.3);
+        }
+
+        tbody tr:nth-child(even) {
+            background: rgba(91, 130, 160, 0.1);
+        }
+
+        tbody tr:hover {
+            background: rgba(91, 130, 160, 0.25);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        table th:first-child,
+        table td:first-child {
+            border-left: none;
+        }
+
+        table th:last-child,
+        table td:last-child {
+            border-right: none;
+        }
+
+        /* Responsive para tablas */
+        @media (max-width: 768px) {
+
+            table,
+            thead,
+            tbody,
+            th,
+            td,
+            tr {
+                display: block;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tbody tr {
+                margin-bottom: 20px;
+                background: rgba(91, 130, 160, 0.05);
+                border-radius: 15px;
+                padding: 15px;
+            }
+
+            tbody td {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px 15px;
+                border-bottom: none;
+            }
+
+            tbody td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #5b82a0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="article-background"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-bar">
+            <nav class="nav-links">
+                <a href="index.html" class="nav-link home-icon"><i class="bi bi-house-door"></i></a>
+                <a href="index.html#vision" class="nav-link">VISIÓN</a>
+                <a href="index.html#mision" class="nav-link">MISIÓN</a>
+                <a href="index.html#proyectos" class="nav-link">PROYECTOS</a>
+                <a href="index.html#equipo" class="nav-link">EQUIPO</a>
+                <a href="index.html#blog" class="nav-link">BLOG</a>
+                <a href="index.html#contacto" class="nav-link">CONTACTO</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Article Content -->
+    <div class="article-container">
+        <a href="index.html#blog" class="back-button">
+            <i class="bi bi-arrow-left"></i>
+            Volver al Blog
+        </a>
+
+        <div class="article-header">
+            <span class="article-category">Guía / IA</span>
+            <h1 class="article-title">Cómo Utilizar Junie</h1>
+            <div class="article-meta">
+                <span><i class="bi bi-calendar"></i>26 de Octubre, 2025</span>
+                <span><i class="bi bi-person"></i>FRAM Development</span>
+                <span><i class="bi bi-clock"></i>8 min de lectura</span>
+            </div>
+            <p class="article-description">
+                Introducción a Junie, el agente de codificación asistida por IA de JetBrains: qué es, cómo instalarlo,
+                su curva de aprendizaje, comparativa y licencias.
+            </p>
+        </div>
+
+        <div class="article-content">
+            <div class="content-section">
+                <h2 class="section-title">
+                    <i class="bi bi-info-circle"></i>
+                    ¿Qué es Junie?
+                </h2>
+                <p class="content-text">
+                    Junie es el agente de codificación asistida por inteligencia artificial integrado en los IDEs de
+                    JetBrains. Combina IA, análisis estático y personalización guiada para ofrecer sugerencias
+                    contextuales, generación automática de código, refactorizaciones asistidas y soporte en tiempo real
+                    dentro del IDE.
+                </p>
+                <div class="highlight-box">
+                    <p class="content-text">
+                        <strong>Resumen:</strong> diseñado para optimizar la productividad, reducir errores y facilitar
+                        el aprendizaje, tanto para desarrolladores novatos como para equipos corporativos.
+                    </p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">
+                    <i class="bi bi-download"></i>
+                    Instalación rápida
+                </h2>
+                <p class="content-text">
+                    Junie se instala como complemento desde el Marketplace de JetBrains o desde la configuración de
+                    plugins del IDE (WebStorm, IntelliJ IDEA, PyCharm, etc.). Pasos rápidos:
+                </p>
+                <ul class="content-list">
+                    <li>Abre tu IDE → File / Settings (Preferences en macOS) → Plugins.</li>
+                    <li>Busca "Junie" o "JetBrains AI" en Marketplace.</li>
+                    <li>Haz clic en <strong>Instalar</strong> y reinicia el IDE si se solicita.</li>
+                    <li>Configura tu cuenta y añade créditos o activa la suscripción para funciones avanzadas si es
+                        necesario.</li>
+                </ul>
+                <p class="content-text">Algunas funcionalidades (análisis en nube, agentes avanzados) requieren conexión
+                    a servicios en la nube y/o créditos según el plan.</p>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">
+                    <i class="bi bi-bar-chart-line"></i>
+                    Curva de Aprendizaje
+                </h2>
+                <p class="content-text">
+                    La curva de aprendizaje de Junie es amigable y progresiva, pensada para que cualquier desarrollador
+                    ya sea principiante o con experiencia pueda adaptarse con facilidad. Su entorno visual limpio, las
+                    sugerencias automáticas y el soporte inteligente permiten empezar a usar la herramienta sin
+                    configuraciones complicadas, lo que reduce el tiempo de adaptación y mejora la productividad desde
+                    los primeros días.
+                </p>
+
+                <h3 style="color: #5b82a0; font-size: 18px; margin: 25px 0 15px;">Fases de Aprendizaje</h3>
+                <div class="content-text">
+                    <strong>Fase Inicial:</strong>
+                    Durante los primeros días, el usuario puede comenzar a trabajar con Junie casi de inmediato. El
+                    sistema ofrece autocompletado inteligente, detección de errores en tiempo real y sugerencias
+                    contextuales, lo que facilita la escritura de código sin necesidad de conocer comandos o atajos
+                    avanzados. En esta etapa, el aprendizaje ocurre de forma natural mientras se programa.
+                </div>
+
+                <div class="content-text">
+                    <strong>Fase Intermedia:</strong>
+                    Con el uso continuo, los desarrolladores descubren funciones más avanzadas como la refactorización
+                    asistida, la generación automática de código repetitivo (boilerplate) y el uso de plantillas
+                    personalizadas. Gracias a la documentación integrada y a los mensajes contextuales del sistema, el
+                    usuario aprende de manera práctica, sin interrumpir su flujo de trabajo.
+                </div>
+
+                <div class="content-text">
+                    <strong>Fase Avanzada:</strong>
+                    En esta fase, los usuarios con mayor experiencia pueden personalizar Junie según sus necesidades:
+                    creación de snippets propios, definición de reglas de análisis estático personalizadas y
+                    automatización de tareas repetitivas, logrando una integración total con los estándares de
+                    desarrollo del equipo o la empresa.
+                </div>
+
+
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">
+                    <i class="bi bi-people"></i>
+                    Comparativa con Herramientas Similares
+                </h2>
+                <p class="content-text">A continuación se presenta una comparativa entre Junie y otras herramientas de
+                    asistencia al desarrollo ampliamente utilizadas.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Herramienta</th>
+                            <th>Descripción breve</th>
+                            <th>Tiempo hasta productividad básica</th>
+                            <th>Tiempo hasta dominio completo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Junie (JetBrains)</td>
+                            <td>Asistente inteligente integrado en IDEs de JetBrains; combina IA, análisis estático y
+                                personalización guiada.</td>
+                            <td>1–3 días</td>
+                            <td>3–4 semanas</td>
+                        </tr>
+                        <tr>
+                            <td>GitHub Copilot</td>
+                            <td>Asistente basado en IA desarrollado por GitHub y OpenAI; muy potente pero requiere
+                                ajuste al estilo de cada usuario.</td>
+                            <td>1 semana</td>
+                            <td>6–8 semanas</td>
+                        </tr>
+                        <tr>
+                            <td>Cursor</td>
+                            <td>Editor con IA integrado basado en VS Code; ofrece interacción conversacional con el
+                                código y autocompletado avanzado.</td>
+                            <td>2–4 días</td>
+                            <td>3–5 semanas</td>
+                        </tr>
+                        <tr>
+                            <td>TabNine</td>
+                            <td>Motor de autocompletado predictivo impulsado por IA; rápido y sencillo, aunque con menos
+                                personalización.</td>
+                            <td>3–5 días</td>
+                            <td>4–5 semanas</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">
+                    <i class="bi bi-credit-card"></i>
+                    Licencias y Costos de JetBrains IA (Junie)
+                </h2>
+                <p class="content-text">JetBrains ofrece distintos planes de licenciamiento para acceder a sus
+                    herramientas de IA integradas. A continuación un resumen de los planes disponibles:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Plan</th>
+                            <th>Tipo de Licencia</th>
+                            <th>Créditos de IA</th>
+                            <th>Características Destacadas</th>
+                            <th>Costo Anual (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>AI Pro</td>
+                            <td>Individual / Organizacional</td>
+                            <td>10 créditos por 30 días</td>
+                            <td>Codificación asistida, chat IA, prueba de Junie.</td>
+                            <td>$100.00</td>
+                        </tr>
+                        <tr>
+                            <td>AI Ultimate</td>
+                            <td>Individual / Organizacional</td>
+                            <td>35 créditos por 30 días</td>
+                            <td>Mayor cuota de créditos, ideal para uso frecuente.</td>
+                            <td>$300.00</td>
+                        </tr>
+                        <tr>
+                            <td>AI Enterprise</td>
+                            <td>Empresarial</td>
+                            <td>Créditos ilimitados</td>
+                            <td>Seguridad avanzada, integraciones personalizadas.</td>
+                            <td>$720.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="content-text">En conclusión, Junie representa una herramienta avanzada para la automatización
+                    de tareas de desarrollo mediante IA. Su flexibilidad de licencias permite adaptarse a estudiantes,
+                    profesionales independientes y organizaciones.</p>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">
+                    <i class="bi bi-gear"></i>
+                    Integración de Junie con otras Herramientas
+                </h2>
+                <p class="content-text">WebStorm + Junie: Junie se integra con WebStorm para ofrecer autocompletado
+                    predictivo, sugerencias contextuales, generación de fragmentos y soporte para frameworks como
+                    Angular, React y Vue.js.</p>
+                <div class="highlight-box">
+                    <p class="content-text"><strong>Ventajas:</strong> aumento de productividad, reducción de errores y
+                        aprendizaje asistido dentro del IDE.</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">
+                    <i class="bi bi-tools"></i>
+                    Para qué se utiliza
+                </h2>
+                <p class="content-text">Junie se emplea para acelerar tareas de desarrollo, mejorar la calidad del
+                    código, generar pruebas y snippets, y facilitar refactorizaciones complejas.</p>
+                <ul class="content-list">
+                    <li>Desarrollo de aplicaciones web modernas.</li>
+                    <li>Generación y revisión de código más rápida y confiable.</li>
+                    <li>Soporte para prácticas de calidad y estandarización en equipos.</li>
+                </ul>
+            </div>
+
+            <div class="video-section">
+                <h2 class="video-title">
+                    <i class="bi bi-play-circle"></i>
+                    Recursos y Tutoriales
+                </h2>
+                <p class="video-description">Consulta la documentación oficial de JetBrains AI y tutoriales en línea
+                    para ejemplos prácticos y flujos de trabajo con Junie.</p>
+                <div class="video-container">
+                    <div class="video-placeholder">
+                        <i class="bi bi-youtube"></i>
+                        <span>Tutoriales sobre Junie</span>
+                        <span style="font-size: 14px; opacity: 0.7;">Haz clic en el enlace de abajo para ver
+                            recursos</span>
+                    </div>
+                </div>
+                <a href="https://youtu.be/N89iXE0exTM?si=FvW36ZfTAM-x7AU9" target="_blank" class="video-link">Ver video tutorial</a>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">
+                    <i class="bi bi-lightbulb"></i>
+                    Buenas Prácticas
+                </h2>
+                <p class="content-text">Recomendaciones para aprovechar Junie de forma segura y efectiva:</p>
+                <ul class="content-list">
+                    <li>Revisa siempre las sugerencias automáticas antes de aceptar cambios.</li>
+                    <li>Personaliza snippets y reglas para alinear la IA con el estilo del equipo.</li>
+                    <li>Combina análisis estático, pruebas y revisión humana para mantener la calidad.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="article-footer">
+            <p class="footer-text">
+                ¿Te ha resultado útil este artículo? Compártelo con tu equipo y síguenos para más contenido sobre
+                desarrollo de software.
+            </p>
+            <div class="footer-links">
+                <a href="index.html#blog" class="footer-link">← Volver al Blog</a>
+                <a href="index.html#contacto" class="footer-link">Contacto</a>
+                <a href="index.html" class="footer-link">Inicio</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Efectos interactivos
+        document.addEventListener('DOMContentLoaded', function () {
+            const header = document.querySelector('.header');
+
+            // Efecto de scroll en el header
+            window.addEventListener('scroll', function () {
+                const scrolled = window.pageYOffset;
+
+                if (scrolled > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Navegación suave
+            const navLinks = document.querySelectorAll('.nav-link[href^="index.html#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    window.location.href = href;
+                });
+            });
+
+            // Animación de entrada para el contenido
+            const articleContent = document.querySelector('.article-content');
+            if (articleContent) {
+                articleContent.style.opacity = '0';
+                articleContent.style.transform = 'translateY(30px)';
+
+                setTimeout(() => {
+                    articleContent.style.transition = 'all 0.8s ease';
+                    articleContent.style.opacity = '1';
+                    articleContent.style.transform = 'translateY(0)';
+                }, 300);
+            }
+        });
+    </script>
+</body>
+
+</html>
